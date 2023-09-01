@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .container {
+      text-align: center;
+      margin-top: 100px;
+    }
+    .image {
+      width: 200px;
+      height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>釣りゲーム</h1>
+    <button id="fishButton" onclick="fish()">釣る</button>
+    <div id="status"></div>
+    <div id="result" style="display: none;"></div>
+    <img id="image" class="image" src="" alt="">
+  </div>
+
+  <script>
+    function fish() {
+      var buttonElement = document.getElementById("fishButton");
+      var statusElement = document.getElementById("status");
+      var resultElement = document.getElementById("result");
+      var imageElement = document.getElementById("image");
+
+      buttonElement.disabled = true;
+
+      setTimeout(function() {
+        statusElement.textContent = "";
+        resultElement.style.display = "block";
+
+        var items = [
+          { name: "ドラゴン", chance: 0.01 },
+          { name: "リヴァイアサン", chance: 0.03 },
+          { name: "クラーケン", chance: 0.05 },
+          { name: "シーラカンス", chance: 0.1 },
+          { name: "リュウグウノツカイ", chance: 1 },
+          { name: "マグロ", chance: 3 },
+          { name: "サケ", chance: 5 },
+          { name: "サバ", chance: 10 },
+          { name: "イワシ", chance: 20 },
+          { name: "フグ", chance: 30 },
+          { name: "何も釣れなかった…", chance: 30.82 }
+        ];
+
+        var totalChance = items.reduce(function(sum, item) {
+          return sum + item.chance;
+        }, 0);
+
+        var randomNum = Math.random() * totalChance;
+
+        var selectedItem = null;
+        var accumulatedChance = 0;
+
+        for (var i = 0; i < items.length; i++) {
+          accumulatedChance += items[i].chance;
+          if (randomNum < accumulatedChance) {
+            selectedItem = items[i];
+            break;
+          }
+        }
+
+        if (selectedItem !== null) {
+          resultElement.textContent = "釣れたもの: " + selectedItem.name;
+        } else {
+          resultElement.textContent = "釣れたもの: 何も釣れなかった…";
+        }
+
+        if (selectedItem) {
+          if (selectedItem.name === "ドラゴン") {
+            imageElement.src = "dragon.png";
+          } else if (selectedItem.name === "リヴァイアサン") {
+            imageElement.src = "leviathan.png";
+          } else if (selectedItem.name === "クラーケン") {
+            imageElement.src = "kraken.png";
+          } else if (selectedItem.name === "シーラカンス") {
+            imageElement.src = "sirakansu.png";
+          } else if (selectedItem.name === "リュウグウノツカイ") {
+            imageElement.src = "ryuuguunotukai.png";
+          } else if (selectedItem.name === "マグロ") {
+            imageElement.src = "maguro.png";
+          } else if (selectedItem.name === "サケ") {
+            imageElement.src = "sake.png";
+          } else if (selectedItem.name === "サバ") {
+            imageElement.src = "saba.png";
+          } else if (selectedItem.name === "イワシ") {
+            imageElement.src = "iwasi.png";
+          } else if (selectedItem.name === "フグ") {
+            imageElement.src = "fugu.png";
+          } else {
+            imageElement.src = "nothing.png";
+          }
+        } else {
+          imageElement.src = "nothing.png";
+        }
+
+        buttonElement.disabled = false;
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
